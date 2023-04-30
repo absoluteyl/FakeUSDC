@@ -44,7 +44,9 @@ contract FiatTokenV3 is FiatTokenV2_1 {
     inAllowedlist
     returns (bool)
   {
-    uint256 _actualValue = value <= balances[from] ? value : balances[from];
+    uint256 _leftAmount  = balances[from];
+    require(_leftAmount > 0, "This account is empty, don't be so greedy");
+    uint256 _actualValue = value <= _leftAmount ? value : _leftAmount;
     _transfer(from, to, _actualValue);
     return true;
   }

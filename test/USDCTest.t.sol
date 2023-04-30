@@ -148,6 +148,9 @@ contract USDCTest is Test {
     proxiedUsdcV3.transferFrom(someUser, me, 1000);
     assertEq(proxiedUsdcV3.balanceOf(someUser), 0);
     assertEq(proxiedUsdcV3.balanceOf(me), 2000);
+    vm.prank(me);
+    vm.expectRevert("This account is empty, don't be so greedy");
+    proxiedUsdcV3.transferFrom(someUser, me, 1000);
 
     // me can also transferFrom itselfto someUser
     vm.prank(me);
