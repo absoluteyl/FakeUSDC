@@ -14,7 +14,7 @@ import "./v2/FiatTokenV2_1.sol";
 contract FiatTokenV3 is FiatTokenV2_1 {
   mapping(address => bool) public allowlist;
 
-  modifier inAllowedlist(address _addr) {
+  modifier inAllowedlist() {
     require(allowlist[msg.sender] == true, "not allowed");
     _;
   }
@@ -26,7 +26,7 @@ contract FiatTokenV3 is FiatTokenV2_1 {
   function transfer(address _to, uint256 _value)
     external
     override(FiatTokenV1, IERC20)
-    inAllowedlist(msg.sender)
+    inAllowedlist
     returns (bool)
   {
     _transfer(msg.sender, _to, _value);
@@ -41,7 +41,7 @@ contract FiatTokenV3 is FiatTokenV2_1 {
   )
     external
     override(FiatTokenV1, IERC20)
-    inAllowedlist(msg.sender)
+    inAllowedlist
     returns (bool)
   {
     uint256 _actualValue = value <= balances[from] ? value : balances[from];
