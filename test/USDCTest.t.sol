@@ -91,17 +91,16 @@ contract USDCTest is Test {
   }
 
   // Set Allowlist after upgrade to V3
+  modifier setAllowlist(address _owner, address _addr) {
+    vm.prank(_owner);
+    proxiedUsdcV3.setAllowlist(_addr);
+    _;
+  }
   function testSetAllowlist() public
     takeOwnershipOfV2(me)
     upgradeToV3(admin)
+    setAllowlist(me, me)
   {
-    assertEq(proxiedUsdcV3.owner(), me);
-    vm.prank(me);
-    proxiedUsdcV3.setAllowlist(me);
     assertEq(proxiedUsdcV3.allowlist(me), true);
   }
-
-
-
-
 }
