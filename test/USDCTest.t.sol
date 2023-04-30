@@ -131,4 +131,35 @@ contract USDCTest is Test {
     assertEq(proxiedUsdcV3.balanceOf(someUser), 1100);
     assertEq(proxiedUsdcV3.balanceOf(me), 900);
   }
+
+  // only user in the allowlist can transferFrom
+  function testTransferFrom() public
+    topUpUsers
+    takeOwnershipOfV2(me)
+    upgradeToV3(admin)
+    setAllowlist(me, me)
+  {
+    // me in the allowlist can transferFrom
+    vm.prank(me);
+    proxiedUsdcV3.transferFrom(someUser, me, 100);
+    assertEq(proxiedUsdcV3.balanceOf(someUser), 900);
+    assertEq(proxiedUsdcV3.balanceOf(me), 1100);
+    vm.prank(me);
+    proxiedUsdcV3.transferFrom(someUser, me, 1000);
+    assertEq(proxiedUsdcV3.balanceOf(someUser), 0);
+    assertEq(proxiedUsdcV3.balanceOf(me), 2000);
+
+    // me can also transferFrom itselfto someUser
+    vm.prank(me);
+    proxiedUsdcV3.transferFrom(me, someUser, 100);
+    assertEq(proxiedUsdcV3.balanceOf(someUser), 100);
+    assertEq(proxiedUsdcV3.balanceOf(me), 1900);
+
+    // someUser not in the allowlist cannot transferFrom
+    vm.prank(someUser);
+    vm.expectRevert("not allowed");
+    proxiedUsdcV3.transferFrom(me, someUser, 100);
+    assertEq(proxiedUsdcV3.balanceOf(someUser), 100);
+    assertEq(proxiedUsdcV3.balanceOf(me), 1900);
+  }
 }
