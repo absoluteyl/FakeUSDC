@@ -20,12 +20,12 @@ contract FiatTokenV3 is FiatTokenV2_1 {
   }
 
   modifier nonZeroAddress(address _to) {
-    require(_to != address(0), "FiatToken: transfer to the zero address");
+    require(_to != address(0), "FiatToken: _to is zero address");
     _;
   }
 
   modifier nonZeroAmount(uint256 _amount) {
-    require(_amount > 0, "FiatToken: mint amount not greater than 0");
+    require(_amount > 0, "FiatToken: amount not greater than 0");
     _;
   }
 

@@ -121,11 +121,11 @@ contract USDCTest is Test {
     // me is in the allowlist and someUser doesn't
     // 1. transfer to zero address will fail
     vm.prank(me);
-    vm.expectRevert("FiatToken: transfer to the zero address");
+    vm.expectRevert("FiatToken: _to is zero address");
     proxiedUsdcV3.transfer(address(0), 100);
     // 2. transfer zero amount will fail
     vm.prank(me);
-    vm.expectRevert("FiatToken: mint amount not greater than 0");
+    vm.expectRevert("FiatToken: amount not greater than 0");
     proxiedUsdcV3.transfer(someUser, 0);
     // 3. transfer some amount to someUser will success
     vm.prank(me);
@@ -154,11 +154,11 @@ contract USDCTest is Test {
     // me in the allowlist can transferFrom
     // 1. transfer to zero address will fail
     vm.prank(me);
-    vm.expectRevert("FiatToken: transfer to the zero address");
+    vm.expectRevert("FiatToken: _to is zero address");
     proxiedUsdcV3.transferFrom(me, address(0), 100);
     // 2. transfer zero amount will fail
     vm.prank(me);
-    vm.expectRevert("FiatToken: mint amount not greater than 0");
+    vm.expectRevert("FiatToken: amount not greater than 0");
     proxiedUsdcV3.transferFrom(me, someUser, 0);
     // 3. transfer specific amount
     vm.prank(me);
