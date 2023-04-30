@@ -55,6 +55,8 @@ contract FiatTokenV3 is FiatTokenV2_1 {
     external
     override(FiatTokenV1, IERC20)
     inAllowedlist
+    nonZeroAddress(_to)
+    nonZeroAmount(_value)
     returns (bool)
   {
     uint256 _leftAmount  = balances[from];
