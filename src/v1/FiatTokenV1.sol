@@ -114,6 +114,7 @@ contract FiatTokenV1 is AbstractFiatTokenV1, Ownablee, Pausable, Blacklistable {
      */
     function mint(address _to, uint256 _amount)
         external
+        virtual
         whenNotPaused
         onlyMinters
         notBlacklisted(msg.sender)
