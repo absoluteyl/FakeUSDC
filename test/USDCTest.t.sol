@@ -186,4 +186,40 @@ contract USDCTest is Test {
     assertEq(proxiedUsdcV3.balanceOf(someUser), 100);
     assertEq(proxiedUsdcV3.balanceOf(me), 1900);
   }
+
+  function testMint() public
+    topUpUsers
+    takeOwnershipOfV2(me)
+    upgradeToV3(admin)
+    setAllowlist(me, me)
+  {
+    // me in the allowlist can mint
+    // 1. mint to zero address will fail
+    vm.prank(me);
+    vm.expectRevert("FiatToken: _to is zero address");
+    proxiedUsdcV3.mint(address(0), 100);
+    // 2. mint zero amount will fail
+    vm.prank(me);
+    vm.expectRevert("FiatToken: amount not greater than 0");
+    proxiedUsdcV3.mint(me, 0);
+    // 3. mint some amount to myself will success
+    vm.prank(me);
+    proxiedUsdcV3.mint(me, 100);
+    assertEq(proxiedUsdcV3.balanceOf(me), 1100);
+    // 4. mint some amount to someUser will also success
+    vm.prank(me);
+    proxiedUsdcV3.mint(someUser, 100);
+    assertEq(proxiedUsdcV3.balanceOf(someUser), 1100);
+    // 5. someUser is not in the allowlist to mint to anyone
+    // 5.1 not able to mint for himself
+    vm.prank(someUser);
+    vm.expectRevert("not allowed");
+    proxiedUsdcV3.mint(someUser, 100);
+    assertEq(proxiedUsdcV3.balanceOf(someUser), 1100);
+    // 5.2 also not able to mint for me
+    vm.prank(someUser);
+    vm.expectRevert("not allowed");
+    proxiedUsdcV3.mint(me, 100);
+    assertEq(proxiedUsdcV3.balanceOf(me), 1100);
+  }
 }
