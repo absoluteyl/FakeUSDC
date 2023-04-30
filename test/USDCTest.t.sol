@@ -118,13 +118,25 @@ contract USDCTest is Test {
     upgradeToV3(admin)
     setAllowlist(me, me)
   {
-    // me in the allowlist can transfer
+    // me is in the allowlist and someUser doesn't
+    // 1. transfer to zero address will fail
+    vm.prank(me);
+    vm.expectRevert("FiatToken: transfer to the zero address");
+    proxiedUsdcV3.transfer(address(0), 100);
+    // 2. transfer zero amount will fail
+    vm.prank(me);
+    vm.expectRevert("FiatToken: mint amount not greater than 0");
+    proxiedUsdcV3.transfer(someUser, 0);
+    // 3. transfer some amount to someUser will success
     vm.prank(me);
     proxiedUsdcV3.transfer(someUser, 100);
     assertEq(proxiedUsdcV3.balanceOf(someUser), 1100);
     assertEq(proxiedUsdcV3.balanceOf(me), 900);
-
-    // someUser not in the allowlist cannot transfer
+    // 4. transfer amount more than balance will fail
+    vm.prank(me);
+    vm.expectRevert("FiatToken: transfer amount exceeds balance");
+    proxiedUsdcV3.transfer(someUser, 1000);
+    // 5. someUser not in the allowlist cannot transfer
     vm.prank(someUser);
     vm.expectRevert("not allowed");
     proxiedUsdcV3.transfer(me, 100);

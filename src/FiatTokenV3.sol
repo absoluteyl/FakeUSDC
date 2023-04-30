@@ -29,6 +29,9 @@ contract FiatTokenV3 is FiatTokenV2_1 {
     inAllowedlist
     returns (bool)
   {
+    require(_to != address(0), "FiatToken: transfer to the zero address");
+    require(_value > 0, "FiatToken: mint amount not greater than 0");
+    require(_value <= balances[msg.sender], "FiatToken: transfer amount exceeds balance");
     _transfer(msg.sender, _to, _value);
     return true;
   }
