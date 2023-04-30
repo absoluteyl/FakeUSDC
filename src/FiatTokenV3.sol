@@ -26,7 +26,7 @@ contract FiatTokenV3 is FiatTokenV2_1 {
   function transfer(address _to, uint256 _value)
     external
     override(FiatTokenV1, IERC20)
-    inAllowedlist(_to)
+    inAllowedlist(msg.sender)
     returns (bool)
   {
     _transfer(msg.sender, _to, _value);
