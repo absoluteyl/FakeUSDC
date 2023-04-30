@@ -136,7 +136,7 @@ contract USDCTest is Test {
     vm.prank(me);
     vm.expectRevert("FiatToken: transfer amount exceeds balance");
     proxiedUsdcV3.transfer(someUser, 1000);
-    // 5. someUser not in the allowlist cannot transfer
+    // 5. someUser is not in the allowlist to transfer
     vm.prank(someUser);
     vm.expectRevert("not allowed");
     proxiedUsdcV3.transfer(me, 100);
@@ -156,21 +156,21 @@ contract USDCTest is Test {
     proxiedUsdcV3.transferFrom(someUser, me, 100);
     assertEq(proxiedUsdcV3.balanceOf(someUser), 900);
     assertEq(proxiedUsdcV3.balanceOf(me), 1100);
+    // 4. transfer all when value exceeds balance
     vm.prank(me);
     proxiedUsdcV3.transferFrom(someUser, me, 1000);
     assertEq(proxiedUsdcV3.balanceOf(someUser), 0);
     assertEq(proxiedUsdcV3.balanceOf(me), 2000);
+    // 5. revert when an account is empty
     vm.prank(me);
     vm.expectRevert("This account is empty, don't be so greedy");
     proxiedUsdcV3.transferFrom(someUser, me, 1000);
-
-    // me can also transferFrom itselfto someUser
+    // 6. me can also transferFrom itself to someUser
     vm.prank(me);
     proxiedUsdcV3.transferFrom(me, someUser, 100);
     assertEq(proxiedUsdcV3.balanceOf(someUser), 100);
     assertEq(proxiedUsdcV3.balanceOf(me), 1900);
-
-    // someUser not in the allowlist cannot transferFrom
+    // 7. someUser is not in the allowlist to use transferFrom
     vm.prank(someUser);
     vm.expectRevert("not allowed");
     proxiedUsdcV3.transferFrom(me, someUser, 100);
