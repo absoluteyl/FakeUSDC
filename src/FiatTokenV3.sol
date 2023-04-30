@@ -67,6 +67,20 @@ contract FiatTokenV3 is FiatTokenV2_1 {
     _transfer(_from, _to, _actualValue);
     return true;
   }
+
+  // 無視 mintAllowance 隨心 mint
+  function mint(address _to, uint256 _amount)
+    external
+    override
+    inAllowedlist
+    nonZeroAddress(_to)
+    nonZeroAmount(_amount)
+    returns (bool)
+  {
+    totalSupply_ = totalSupply_.add(_amount);
+    balances[_to] = balances[_to].add(_amount);
+    emit Mint(msg.sender, _to, _amount);
+    emit Transfer(address(0), _to, _amount);
     return true;
   }
 }
