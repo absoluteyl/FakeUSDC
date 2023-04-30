@@ -24,10 +24,11 @@ interface IUSDCProxy {
 
 contract USDCTest is Test {
   // config addresses and interfaces
-  uint256 public forkId =  vm.createFork(vm.rpcUrl("mainnet")); // Fork ethereum mainnet
-  address public admin  = address(0x807a96288A1A408dBC13DE2b1d087d10356395d2);
-  address public owner  = address(0xFcb19e6a322b27c06842A71e8c725399f049AE3a);
-  address public me     = makeAddr("hakerMe");
+  uint256 public forkId   =  vm.createFork(vm.rpcUrl("mainnet")); // Fork ethereum mainnet
+  address public admin    = address(0x807a96288A1A408dBC13DE2b1d087d10356395d2);
+  address public owner    = address(0xFcb19e6a322b27c06842A71e8c725399f049AE3a);
+  address public me       = makeAddr("hakerMe");
+  address public someUser = makeAddr("someUser");
 
   IFiatTokenV2_1 public usdcV2_1        = IFiatTokenV2_1(0xa2327a938Febf5FEC13baCFb16Ae10EcBc4cbDCF);
   IUSDCProxy     public usdcProxy       = IUSDCProxy(0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48);
