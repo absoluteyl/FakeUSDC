@@ -40,6 +40,12 @@ contract USDCTest is Test {
     vm.selectFork(forkId);
   }
 
+  modifier topUpUsers() {
+    deal(address(proxiedUsdcV3), someUser, 1000);
+    deal(address(proxiedUsdcV3), me, 1000);
+    _;
+  }
+
   modifier checkForkStatus() {
     // Check Admin and current implementation addresses
     vm.startPrank(admin);
