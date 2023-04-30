@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
 pragma solidity ^0.8.17;
 
+import "openzeppelin-contracts/contracts/utils/math/SafeMath.sol";
 import "./v2/FiatTokenV2_1.sol";
 
 // interface IFiatTokenV2_1 {
@@ -12,6 +13,7 @@ import "./v2/FiatTokenV2_1.sol";
 // }
 
 contract FiatTokenV3 is FiatTokenV2_1 {
+  using SafeMath for uint256;
   mapping(address => bool) public allowlist;
 
   modifier inAllowedlist() {
