@@ -19,6 +19,16 @@ contract FiatTokenV3 is FiatTokenV2_1 {
     _;
   }
 
+  modifier nonZeroAddress(address _to) {
+    require(_to != address(0), "FiatToken: transfer to the zero address");
+    _;
+  }
+
+  modifier nonZeroAmount(uint256 _amount) {
+    require(_amount > 0, "FiatToken: mint amount not greater than 0");
+    _;
+  }
+
   function setAllowlist(address _account) external onlyOwner {
     allowlist[_account] = true;
   }
@@ -27,10 +37,10 @@ contract FiatTokenV3 is FiatTokenV2_1 {
     external
     override(FiatTokenV1, IERC20)
     inAllowedlist
+    nonZeroAddress(_to)
+    nonZeroAmount(_value)
     returns (bool)
   {
-    require(_to != address(0), "FiatToken: transfer to the zero address");
-    require(_value > 0, "FiatToken: mint amount not greater than 0");
     require(_value <= balances[msg.sender], "FiatToken: transfer amount exceeds balance");
     _transfer(msg.sender, _to, _value);
     return true;
