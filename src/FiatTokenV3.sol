@@ -14,20 +14,6 @@ import "./v2/FiatTokenV2_1.sol";
 contract FiatTokenV3 is FiatTokenV2_1 {
   mapping(address => bool) public allowlist;
 
-  // function owner() public view returns (address) {
-  //   return IFiatTokenV2_1(0xa2327a938Febf5FEC13baCFb16Ae10EcBc4cbDCF).owner();
-  // }
-  // modifier onlyOwner() {
-  //   require(msg.sender == owner(), "only owner");
-  //   _;
-  // }
-
-  // function initializeV3() external {
-  //   require(initialized && _initializedVersion == 2);
-  //   allowlist[msg.sender] = true;
-  //   _initializedVersion = 3;
-  // }
-
   function setAllowlist(address _account) external onlyOwner {
     allowlist[_account] = true;
   }
