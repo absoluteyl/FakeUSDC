@@ -249,6 +249,7 @@ contract FiatTokenV1 is AbstractFiatTokenV1, Ownablee, Pausable, Blacklistable {
         uint256 value
     )
         external
+        virtual
         override
         whenNotPaused
         notBlacklisted(msg.sender)
